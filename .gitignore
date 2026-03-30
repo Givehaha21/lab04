@@ -177,3 +177,5 @@ Dockerfile.local
 *.DS_Store?
 *.icloud
 
+
+/src/generated/prisma

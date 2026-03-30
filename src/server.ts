@@ -1,6 +1,6 @@
-import express, {Request, Response} from 'express'
-import { getAllEvents, getEventByCategory, getEventById, addEvent } from "./services/EventService";
-import type Event from "./models/Event";
+import express from 'express'
+import type { Request, Response } from 'express'
+import { addBook, getAllBooks, getBookByGroup, getBookById } from './services/BookService'
 
 const app = express()
 const port = 3000
@@ -14,45 +14,44 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`)
 })
-app.get('/test', (req: Request, res: Response) => {
-    const id = req.query.id;
-    const output = `id: ${id}`;
-    res.send(output);
-})
+// app.get('/test', (req: Request, res: Response) => {
+//     const id = req.query.id;
+//     const output = `id: ${id}`;
+//     res.send(output);
+// })
 
 
-app.get('/test', (req, res) => {
-    let returnObj = {
-        name: 'test',
-        age: 20,
-        address: 'Thai'
-    }
-    res.send(returnObj);
-})
-app.get("/events/:id", async (req, res) => {
+// app.get('/test', (req, res) => {
+//     let returnObj = {
+//         name: 'test',
+//         age: 20,
+//         address: 'Thai'
+//     }
+//     res.send(returnObj);
+// })
+app.get("/books/:id", async (req, res) => {
     const id = parseInt(req.params.id);
-    const event = await getEventById(id);
-    if (event) {
-        res.json(event);
+    const books = await getBookById(id);
+    if (books) {
+        res.json(books);
     } else {
-        res.status(404).send("Event not found");
+        res.status(404).send("books not found");
     }
 });
 
-app.get("/events", async (req, res) => {
-    if (req.query.category) {
-        const category = req.query.category as string;
-        const filteredEvents = await getEventByCategory(category);
-        res.json(filteredEvents);
+app.get("/books", async (req, res) => {
+    if (req.query.group) {
+        const group = req.query.group as string;
+        const filteredbookss = await getBookByGroup(group);
+        res.json(filteredbookss);
     } else {
-        res.json(await getAllEvents());
+        res.json(await getAllBooks());
     }
 });
 
-app.post("/events", async (req, res) => {
-    const newEvent: Event = req.body;
-
-    res.json(await addEvent(newEvent));
+app.post("/books", async (req, res) => {
+    const newbooks = req.body;
+    res.json(await addBook(newbooks));
 });
 
 
